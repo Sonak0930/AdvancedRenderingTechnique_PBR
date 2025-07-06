@@ -10,7 +10,7 @@ PBR은 Physically Based Rendering의 약어로 빛과 표면의 물리적인 성
 반면에 부도체는 표면 반사(subsurface-scattering)가 일어나기 때문에 투박하고, 빛이 퍼져보입니다.
 이러한 물체의 특징들을 고려해서 새로운 렌더링 테크닉이 요구되었고, PBR은 이를 자세하게 다룹니다.
 
-## BRDF
+# BRDF
 PBR을 시작하면서 가장 먼저 알아야 할 개념은 BRDF입니다. 
 Blinn-Phong에서는 최종 PixelColor를 계산할 때 다음과 같은 방식을 사용합니다.
 ```
@@ -47,7 +47,7 @@ f_r(x,wi,wo)
 ```
 - wi는 incident light, wo는 outgoing light를 나타냅니다.
 
-### Diffuse Material
+# Diffuse Material
 Diffuse Material의 Analytic BRDF를 계산하기 전에, 간단하게 Diffuse Material의 특성에 대해 정리해 보겠습니다.
 ![image](https://github.com/user-attachments/assets/57de48dc-65b4-45e0-ac27-5c1810a88440)
 
@@ -91,5 +91,55 @@ https://www.freepik.com/psd/terracotta
 ![image](https://github.com/user-attachments/assets/1da1f7a6-e560-47dc-88df-f8f4d07ff316)
 
 Oren-Nayar는 subsurface scattering distance가 작은 material을 대상으로 적합합니다.
+
+![image](https://github.com/user-attachments/assets/82fbb8a4-f812-4ae1-84a7-242bb4718143)
+
+ref: https://www.sciencedirect.com/topics/computer-science/diffuse-surface
+
+위 ref에서 설명하듯이, oren-nayar의 surface는 lambertian이기 때문에 다음과 같은 사항들을 고려하지 않습니다.
+- inter-reflection(반사되어 나온 빛이 다른 facet에 부딪히는 현상)
+- shadowing (다른 facet에 의해 빛이 도달하지 못함)
+- masking (반사된 빛이 다른 facet에 차단되어서 우리 눈으로 들어오지 못함)
+
+
+# Specular BRDF
+지금까지 Diffuse BRDF를 계산했으니, Specular BRDF도 구해보겠습니다.
+
+## Fresnel
+Specular는 Diffuse와 다르게 Fresnel의 영향을 받습니다.
+발 밑의 바다를 보면 물 속에 뭐가 있는지 훤히 보이지만,
+먼 거리에 있는 바다를 보면 푸른 빛만 반사되는 현상을 보신 적이 있을 겁니다.
+
+이 현상은 빛의 '편광'(Polarization)때문에 일어납니다.
+
+[아래 내용은 wikipedia를 참고해서 작성되었습니다.]
+빛이 서로 다른 매질의 경계면에 부딪힐 때, 빛의 전기장 방향이 입사면(incident plane)에 대해 수직인지 평행인지에 따라
+반사 및 투과율이 달라집니다.
+
+- S-편광(S-Polarization)
+
+빛의 전기장이 입사면에 대해 수직인 경우 입니다. 강의노트에서는 R_s로 notation이 되어 있습니다.
+입사각이 변함에 따라 점차 반사율이 증가합니다.
+
+- P-편광(P-Polarization)
+
+  빛의 전기장이 입사면과 평행한 경우 입니다. R_p로 notation이 되어 있습니다.
+
+![image](https://github.com/user-attachments/assets/1dc9d7f7-290d-4174-8a9c-0ff9ad06c6b2)
+
+이미지를 보면 좀 더 이해하기가 쉽습니다. 
+이 사진은 카메라의 편광 필터 방향이 서로 반대인 상황입니다.
+- 왼쪽 사진
+
+왼쪽 사진에서는 polarizer의 방향이 세로 방향이라, 카메라의 필터와 R_p가 일치하기 때문에
+강한 반사가 일어납니다.
+
+- 오른쪽 사진
+
+  오른쪽 사진은 가로 방향의 필터를 사용해 R_p가 0이 되도록 만들었습니다.
+  그래서 Reflection이 아니라 Transmission이 일어나서 빛이 투과됩니다.
+![image](https://github.com/user-attachments/assets/dc515a0c-0dfc-41f5-9de7-2b2413d9498f)
+
+위 그래프는 각도에 따른 Rs와 Rp, 그리고 Ts와 Tp의 변화 양상을 나타냅니다.
 
 
