@@ -13,6 +13,12 @@
 3. 렌더링 된 텍스처를 다음 쉐이더의 인풋으로 사용
 등 생각보다 구현이 복잡한 사항이 많아 일단은 GLSL만 공개하겠습니다.
 
+### Technical Page 
+쉐이더 코드 설명 및 개념 설명을 위해 별도의 페이지를 마련했습니다.
+README에 다 담기에는 방대한 양이라 양해부탁드립니다.
+
+
+
 ### 개관
 https://github.com/user-attachments/assets/7e2bbe5f-9f7e-4b1e-8a21-551772d41ce1
 
@@ -33,5 +39,6 @@ Blinn-Phong Shading으로 Specular Light를 더한 결과입니다.
 ![0 GGX](https://github.com/user-attachments/assets/953181e0-4b0c-43f7-995b-21fd67a136e8)
 
 2번째: GGX-Distribution
+GGX Distribution을 이용해 Specular를 계산한 결과입니다.
 
 
