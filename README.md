@@ -17,7 +17,7 @@
 쉐이더 코드 설명 및 개념 설명을 위해 별도의 페이지를 마련했습니다.
 README에 다 담기에는 방대한 양이라 양해부탁드립니다.
 
-
+https://github.com/Sonak0930/AdvancedRenderingTechnique_PBR/blob/main/TECHPAGE.md
 
 ### 개관
 https://github.com/user-attachments/assets/7e2bbe5f-9f7e-4b1e-8a21-551772d41ce1
