@@ -113,6 +113,7 @@ Specular는 Diffuse와 다르게 Fresnel의 영향을 받습니다.
 이 현상은 빛의 '편광'(Polarization)때문에 일어납니다.
 
 [아래 내용은 wikipedia를 참고해서 작성되었습니다.]
+
 빛이 서로 다른 매질의 경계면에 부딪힐 때, 빛의 전기장 방향이 입사면(incident plane)에 대해 수직인지 평행인지에 따라
 반사 및 투과율이 달라집니다.
 
@@ -136,10 +137,28 @@ Specular는 Diffuse와 다르게 Fresnel의 영향을 받습니다.
 
 - 오른쪽 사진
 
-  오른쪽 사진은 가로 방향의 필터를 사용해 R_p가 0이 되도록 만들었습니다.
-  그래서 Reflection이 아니라 Transmission이 일어나서 빛이 투과됩니다.
+오른쪽 사진은 가로 방향의 필터를 사용해 R_p가 0이 되도록 만들었습니다.
+그래서 Reflection이 아니라 Transmission이 일어나서 빛이 투과됩니다.
 ![image](https://github.com/user-attachments/assets/dc515a0c-0dfc-41f5-9de7-2b2413d9498f)
 
 위 그래프는 각도에 따른 Rs와 Rp, 그리고 Ts와 Tp의 변화 양상을 나타냅니다.
+R은 Reflection, T는 Transmission을 나타냅니다.
+간단하게만 설명하자면, 특정 incident angle을 기준으로 Transmission보다 Reflection이 커집니다.
+
+따라서 incident angle에 따라 reflection color를 다르게 계산할 필요가 있습니다.
+
+## Schlick's approximation
+실제로 Rs와 Rp로 R을 계산하는 과정은 꽤나 복잡하기 때문에, Schlick이라는 사람의 간단한 버전을 사용하도록 했습니다.
+
+![image](https://github.com/user-attachments/assets/0c8f95ee-51d3-4bfd-a0c2-e2f51a7f1626)
+
+간단하게만 설명하자면, normal angle과 stiff angle에서 각각 물체의 specular color를 결정합니다.
+F(theta)는 incident angle=theta일 때 Fresnel Factor를 나타냅니다.
+
+F0는 물체의 Mirror-like reflection 색상입니다.
+Dielctric의 경우에는 흰색(부도체의 경우 굉장히 강한 빛을 쏘면 물체의 diffuse color가 날아가고, 물체가 흰색으로 변하는 현상이 있습니다.)
+electric의 경우에는 물체의 고유한 specular color가 반사됩니다.
+
+### Phong & Blinn-Phong Specular BRDF
 
 
