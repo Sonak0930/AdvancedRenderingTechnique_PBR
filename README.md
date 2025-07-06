@@ -5,7 +5,14 @@
 * [코드 저작권](#코드-저작권)
 * [이론적 배경](#이론적-배경)
     * [PBR 소개](#PBR-소개)
-    * [렌더링 방정식](#렌더링-방정식)
+    * [렌더링 방정식](#BRDF)
+    * [Diffuse Material](#Diffuse-Material)
+    * [Microfacet Model](##Microfacet-Model)
+    * [Oren-Nayar Diffuse Reflection](##Oren-Nayar-Diffuse-Reflection)
+    * [Specular BRDF](#Specular-BRDF)
+    * [Fresnel](##Fresnel)
+    * [Schlick's approximation](##Schlick's-Approximation)
+    * [Blinn-Phong Specular](##Phong-&-Blinn-Phong-Specular-BRDF)
 * [코드 구조](#코드-구조)
 * [구현 결과 (Visual Snippets)](#구현-결과-visual-snippets)
 * [설치 및 실행](#설치-및-실행)
@@ -88,7 +95,7 @@ diffuse material에 반사되어서 우리 눈으로 보이는 색을 Albedo라�
 Microfacet model은 기존의 모델을 마치 Complex Model 처럼 렌더링해서 Realistic한 렌더링 결과를 만듭니다.
 그리고 이 연산을 GPU에서 하기 때문에 상대적으로 부담이 적습니다.
 
-### Oren-Nayar Diffuse Reflection
+## Oren-Nayar Diffuse Reflection
 Oren-Nayar는 V-shaped microfacet model입니다. 
 ![image](https://github.com/user-attachments/assets/b01b55e4-4796-4bd2-8e66-0b0084b1d750)
 
@@ -164,7 +171,7 @@ R은 Reflection, T는 Transmission을 나타냅니다.
 
 따라서 incident angle에 따라 reflection color를 다르게 계산할 필요가 있습니다.
 
-## Schlick's approximation
+## Schlick's Approximation
 실제로 Rs와 Rp로 R을 계산하는 과정은 꽤나 복잡하기 때문에, Schlick이라는 사람의 간단한 버전을 사용하도록 했습니다.
 
 ![image](https://github.com/user-attachments/assets/0c8f95ee-51d3-4bfd-a0c2-e2f51a7f1626)
@@ -176,7 +183,7 @@ F0는 물체의 Mirror-like reflection 색상입니다.
 Dielctric의 경우에는 흰색(부도체의 경우 굉장히 강한 빛을 쏘면 물체의 diffuse color가 날아가고, 물체가 흰색으로 변하는 현상이 있습니다.)
 electric의 경우에는 물체의 고유한 specular color가 반사됩니다.
 
-### Phong & Blinn-Phong Specular BRDF
+## Phong & Blinn-Phong Specular BRDF
 
 
 
