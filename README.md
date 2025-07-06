@@ -11,7 +11,7 @@
     * [Oren-Nayar Diffuse Reflection](##Oren-Nayar-Diffuse-Reflection)
     * [Specular BRDF](#Specular-BRDF)
     * [Fresnel](##Fresnel)
-    * [Schlick's approximation](##Schlick's Approximation)
+    * [Schlick's Approximation](##Schlick's-Approximation)
     * [Blinn-Phong Specular](##Phong-&-Blinn-Phong-Specular-BRDF)
 * [코드 구조](#코드-구조)
 * [구현 결과 (Visual Snippets)](#구현-결과-visual-snippets)
