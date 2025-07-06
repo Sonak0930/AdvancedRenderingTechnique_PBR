@@ -16,4 +16,22 @@
 ### 개관
 https://github.com/user-attachments/assets/7e2bbe5f-9f7e-4b1e-8a21-551772d41ce1
 
+### Specular Option
+![0 NoSpecular](https://github.com/user-attachments/assets/cff400dd-7878-4cc5-85a9-e5cb496fd079)
+
+0번째: No Specular
+Specular Lighting을 고려하지 않은 결과입니다. 
+Specular는 이미지에서 Highlight를 반짝반짝하게 만드는 효과가 있습니다.
+현재 이미지에서 반짝 거리는 것은 Specular가 아니라 이미지 자체에 있는 빛을 그대로 렌더링해서 보이는 결과입니다.
+
+![0 BlinnPhong](https://github.com/user-attachments/assets/d2726fb8-b6df-42ba-b33e-eab22f112336)
+
+1번째: Blinn-Phong Shading 
+Blinn-Phong Shading으로 Specular Light를 더한 결과입니다.
+0번째와 비교했을때, 토끼 귀가 접히는 부분에서 하이라이트가 반짝반짝한 것을 볼 수 있습니다.
+
+![0 GGX](https://github.com/user-attachments/assets/953181e0-4b0c-43f7-995b-21fd67a136e8)
+
+2번째: GGX-Distribution
+
 
