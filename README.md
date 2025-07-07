@@ -109,6 +109,10 @@ vec3 diffuseBRDF(vec3 w_i, vec3 w_o,vec3 N,vec3 albedo, vec3 F0, float a)
 diffuseBRDF는 3가지 옵션이 있습니다.
 0: diffTex 이미지 컬러 사용 -> Shading 없이 기본 diffuse Texture의 이미지를 사용합니다.
 1: OrenNayar 사용 
+## diffuseTex 렌더링 결과
+![image](https://github.com/user-attachments/assets/8575afae-6c36-45c8-9861-5106bdfdaf16)
+
+
 
 ### FresnelMode 사용 
 -> 이 코드는 사용한지 오래 되어 원문 소스를 찾지 못했습니다.
@@ -149,7 +153,7 @@ Oren-Nayar는 V-shaped microfacet model입니다.
 검은색 면이 기존의 큰 면(Macrofacet)을 나타내고, 분홍색으로 칠해진 면들이 미세면(microfacet)을 나타냅니다.
 Shading을 할 때는 microfacet 기준으로 하기 때문에, 기존의 macrofacet을 사용할 때보다 다양한 양상의 노멀(normal distribution)이 보입니다
 
-- normal distribution
+## normal distribution
 노멀들의 분포 양상을 분포 함수로 표현한 것입니다. 표준 편차(standard deviation)가 크다는 것은, 노멀들의 값이 골고루 나온다는 뜻이므로
 물체 표면이 전체적으로 거칠게 표현됩니다. oren-nayar 에서는 표면의 거친 정도(roughness)를 standard deviation으로 설정해서
 roughness가 클 수록 표면이 거칠게 렌더링됩니다.
@@ -158,7 +162,7 @@ roughness가 클 수록 표면이 거칠게 렌더링됩니다.
 
 https://www.freepik.com/psd/terracotta
 
-- 한계
+## 한계
 ![image](https://github.com/user-attachments/assets/1da1f7a6-e560-47dc-88df-f8f4d07ff316)
 
 Oren-Nayar는 subsurface scattering distance가 작은 material을 대상으로 적합합니다.
@@ -171,6 +175,41 @@ ref: https://www.sciencedirect.com/topics/computer-science/diffuse-surface
 - inter-reflection(반사되어 나온 빛이 다른 facet에 부딪히는 현상)
 - shadowing (다른 facet에 의해 빛이 도달하지 못함)
 - masking (반사된 빛이 다른 facet에 차단되어서 우리 눈으로 들어오지 못함)
+
+
+## 코드
+```
+vec3 OrenNayar(vec3 w_i, vec3 w_o, vec3 N , float a2, vec3 albedo)
+{
+	float cosTi=dot(w_i,N);
+	float cosTr = dot(w_o,N);
+	float thetaI=acos(cosTi);
+	float thetaR=acos(cosTr);
+	float cosPhi=dot(normalize(w_i-N*cosTi),normalize(w_o-N*cosTr));
+	float alpha=max(thetaI,thetaR);
+	float beta=min(thetaI,thetaR);
+	float sigmaa=a2/(a2+0.09);
+	float C1=1-0.5*a2/(a2+0.33);
+	float C2=0.45*sigmaa*(cosPhi>=0?sin(alpha):(sin(alpha)-pow(2*beta/PI,3)));
+	float C3=0.125*sigmaa*pow(4*alpha*beta/(PI*PI),2);
+	float L1 = cosTi*(C1+C2*cosPhi*tan(beta)+C3*(1-abs(cosPhi))*tan((alpha+beta)/2));
+	vec3 L2 = 0.17*albedo*cosTi*(a2/(a2+0.13))*(1-cosPhi*pow(2*beta/PI,2));
+	return vec3(L1)+L2;
+}
+```
+
+![image](https://github.com/user-attachments/assets/0a53fcfb-eb11-479f-b273-91ed74e5125c)
+
+출처:[wikipedi](https://en.wikipedia.org/wiki/Oren%E2%80%93Nayar_reflectance_model)
+
+해당 코드는 Oren-Nayar Model의 수식을 code로 옮긴 것입니다. 
+theta_i와 theta_r로는 각각 w_i(incident light), w_o(reflected light)이 사용됩니다.
+
+## 렌더링 결과
+https://github.com/user-attachments/assets/666b4d86-b0ac-4d0c-819a-c66741b3444d
+
+roughness가 낮을 때는 매끈한 표면이지만, roughness가 올라가면 점토처럼 딱딱하고 거친 느낌을 주는 것을 확인할 수 있습니다.
+
 
 
 # Specular BRDF
