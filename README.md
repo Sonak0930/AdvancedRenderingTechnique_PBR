@@ -88,6 +88,29 @@ diffuse material에 반사되어서 우리 눈으로 보이는 색을 Albedo라�
 이 색상은 실제 물체 색상인 diffuse Material에 PI를 곱한 값입니다.
 그런데 강의 노트나 코드에서는 이 둘을 구분해서 사용하기 보다는, diffuse color 또는 albedo 하나의 개념으로 사용합니다.
 
+## 코드
+```
+vec3 diffuseBRDF(vec3 w_i, vec3 w_o,vec3 N,vec3 albedo, vec3 F0, float a)
+{
+	vec3 reflectance = vec3(1);
+
+	if(diffuseModel==0)
+		reflectance =  vec3(0);
+	else if(diffuseModel ==1)
+		reflectance = vec3(OrenNayar(w_i,w_o,N,a,albedo))/dot(w_i,N);
+	
+	if(fresnelMode ==1)
+		reflectance *= (vec3(1)-Fresnel(w_i,N,F0))/(vec3(1)-F0);
+
+	return albedo/PI*reflectance;
+
+}
+```
+diffuseBRDF는 3가지 옵션이 있습니다.
+0: diffTex 이미지 컬러 사용 -> Shading 없이 기본 diffuse Texture의 이미지를 사용합니다.
+1: OrenNayar 사용 
+FresnelMode 사용 -> 
+
 # Microfacet model
 - 개요
 조금 더 Realsitic한 표현을 위해, 물체 표면(surface)도 미세하게 조정할 필요가 있습니다.
@@ -184,12 +207,19 @@ Dielctric의 경우에는 흰색(부도체의 경우 굉장히 강한 빛을 쏘
 electric의 경우에는 물체의 고유한 specular color가 반사됩니다.
 
 # Phong & Blinn-Phong Specular BRDF
+본격적으로 Specular BRDF를 구해 보겠습니다.
 
+## Phong Specular BRDF
+```
+R = reflect(N-L)
+```
+빛의 반사 방향(R)이 N(surface normal)과 L(incident light)의 perfect mirror reflection이라고 가정합니다.
+그리고 이 R은 V(viewing angle)과 비슷할 수록 Specular reflection이 강해지게 됩니다.
 
+![image](https://github.com/user-attachments/assets/3f7d89d6-a7e0-4468-9584-4a3d959de4b7)
 
-
-
-
+https://github.com/user-attachments/assets/ff77f80e-3e9e-4c18-80d3-46706c8af097
+Phong Specular 결과입니다.
 
 
 
