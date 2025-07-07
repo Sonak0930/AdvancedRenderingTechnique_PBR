@@ -109,7 +109,31 @@ vec3 diffuseBRDF(vec3 w_i, vec3 w_o,vec3 N,vec3 albedo, vec3 F0, float a)
 diffuseBRDF는 3가지 옵션이 있습니다.
 0: diffTex 이미지 컬러 사용 -> Shading 없이 기본 diffuse Texture의 이미지를 사용합니다.
 1: OrenNayar 사용 
-FresnelMode 사용 -> 
+
+### FresnelMode 사용 
+-> 이 코드는 사용한지 오래 되어 원문 소스를 찾지 못했습니다.
+다만, 이 코드의 역할은 Fresnel을 Diffuse color에 적용해서 w_i에 따라 diffuse의 reflectance를 결정합니다.
+![image](https://github.com/user-attachments/assets/70c10d0a-2808-42d8-80bf-0a98555f4583)
+
+![image](https://github.com/user-attachments/assets/2e62148e-0b7d-4f2c-b83c-fb4c43a70b51)
+
+incident light가 grazing angle인 경우, 해당 diffuse의 영향력은 0이 됩니다.
+
+![image](https://github.com/user-attachments/assets/d9deda59-857e-4bf7-8f9e-5732429b697e)
+
+incident light가 normal direction인 경우, diffuse의 영향력은 1로 유지됩니다.
+
+이 코드의 소스를 찾기 위해 gemini를 사용했습니다. 
+gemini는 Yoshiharu Gotanda의 GDC valult에서 소개된 diffuse Reflection 계산방법을 소개했는데,
+해당 normalization 코드는 찾을 수가 없었습니다.
+
+![image](https://github.com/user-attachments/assets/03e1cf26-0814-4518-9c97-02d798c155c6)
+gemini의 의견에 따르면 F0를 사용할 때 의도치 않게 diffuse color가 어두워지는 현상이 발생합니다.
+그래서 이를 막기 위한 장치로 보인다고 설명합니다.
+
+아마 강의에서도 비슷한 이야기가 나왔을 거 같은데, 기록을 다른 곳에 해 놓았는지 관련한 내용을 찾기는 어려웠습니다.
+추측컨대 원문(GDC)의 구현이 복잡한 이유로 간소화한 버전이 아닐까 생각하고 있습니다.
+
 
 # Microfacet model
 - 개요
