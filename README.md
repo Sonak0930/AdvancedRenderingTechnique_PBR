@@ -13,6 +13,7 @@
     * [Fresnel](#Fresnel)
     * [Schlick's Approximation](#Schlick's-Approximation)
     * [Blinn-Phong Specular](#Phong-&-Blinn-Phong-Specular-BRDF)
+    * [Cook-Torrance](#Cook-Torrance-Model)
 * [코드 구조](#코드-구조)
 * [구현 결과 (Visual Snippets)](#구현-결과-visual-snippets)
 * [설치 및 실행](#설치-및-실행)
@@ -107,16 +108,19 @@ vec3 diffuseBRDF(vec3 w_i, vec3 w_o,vec3 N,vec3 albedo, vec3 F0, float a)
 }
 ```
 diffuseBRDF는 3가지 옵션이 있습니다.
+
 0: diffTex 이미지 컬러 사용 -> Shading 없이 기본 diffuse Texture의 이미지를 사용합니다.
+
 1: OrenNayar 사용 
+
 ## diffuseTex 렌더링 결과
 ![image](https://github.com/user-attachments/assets/8575afae-6c36-45c8-9861-5106bdfdaf16)
 
 
-
 ### FresnelMode 사용 
--> 이 코드는 사용한지 오래 되어 원문 소스를 찾지 못했습니다.
+이 코드는 사용한지 오래 되어 원문 소스를 찾지 못했습니다.
 다만, 이 코드의 역할은 Fresnel을 Diffuse color에 적용해서 w_i에 따라 diffuse의 reflectance를 결정합니다.
+
 ![image](https://github.com/user-attachments/assets/70c10d0a-2808-42d8-80bf-0a98555f4583)
 
 ![image](https://github.com/user-attachments/assets/2e62148e-0b7d-4f2c-b83c-fb4c43a70b51)
@@ -269,10 +273,10 @@ F0는 물체의 Mirror-like reflection 색상입니다.
 Dielctric의 경우에는 흰색(부도체의 경우 굉장히 강한 빛을 쏘면 물체의 diffuse color가 날아가고, 물체가 흰색으로 변하는 현상이 있습니다.)
 electric의 경우에는 물체의 고유한 specular color가 반사됩니다.
 
-# Phong & Blinn-Phong Specular BRDF
+# Phong & Blinn-Phong Specular 
 본격적으로 Specular BRDF를 구해 보겠습니다.
 
-## Phong Specular BRDF
+## Phong Specular 
 ```
 R = reflect(N-L)
 ```
@@ -284,24 +288,27 @@ R = reflect(N-L)
 https://github.com/user-attachments/assets/ff77f80e-3e9e-4c18-80d3-46706c8af097
 Phong Specular 결과입니다.
 
+## Phong & BlinnPhong model의 한계
+![image](https://github.com/user-attachments/assets/d4f41fe0-e0f8-4ad9-926a-5752e23c78fe)
+
+[src]:https://boksajak.github.io/files/CrashCourseBRDF.pdf
+
+해당 pdf의 8페이지를 보면, Blinn-phong은 물리적으로 정확하지 않기 때문에 BRDF라고 표기하지 않는다고 되어있습니다.
+BRDF로 정의되기 위해서는 2가지 성질이 필요합니다.
+
+![image](https://github.com/user-attachments/assets/7b2c6a09-d0ed-417c-9002-2f5b074f4714)
+
+분량상의 문제로 두 개념을 자세하게 다루기는 어렵습니다.
+Phong은 2가지를 만족하지 못하지만 계산이 빠르고 그럴듯한 결과를 내기 때문에 포함시켰습니다.
 
 
-### 개관
-https://github.com/user-attachments/assets/7e2bbe5f-9f7e-4b1e-8a21-551772d41ce1
+# Cook-Torrance Model
+위에서 언급한 Phong모델의 물리적인 불완전성 때문에, Cook과 Torrance가 제시한 새로운 모델을 사용합니다.
 
-### Specular Option
-![0 NoSpecular](https://github.com/user-attachments/assets/cff400dd-7878-4cc5-85a9-e5cb496fd079)
-
-0번째: No Specular
-Specular Lighting을 고려하지 않은 결과입니다. 
-Specular는 이미지에서 Highlight를 반짝반짝하게 만드는 효과가 있습니다.
-현재 이미지에서 반짝 거리는 것은 Specular가 아니라 이미지 자체에 있는 빛을 그대로 렌더링해서 보이는 결과입니다.
-
+![image](https://github.com/user-attach과
 ![0 BlinnPhong](https://github.com/user-attachments/assets/d2726fb8-b6df-42ba-b33e-eab22f112336)
-
-1번째: Blinn-Phong Shading 
-Blinn-Phong Shading으로 Specular Light를 더한 결과입니다.
-0번째와 비교했을때, 토끼 귀가 접히는 부분에서 하이라이트가 반짝반짝한 것을 볼 수 있습니다.
+ 
+토끼 귀가 접히는 부분에서 하이라이트가 반짝반짝한 것을 볼 수 있습니다.
 
 ![0 GGX](https://github.com/user-attachments/assets/953181e0-4b0c-43f7-995b-21fd67a136e8)
 
